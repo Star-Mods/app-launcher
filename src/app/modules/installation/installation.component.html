@@ -1,0 +1,59 @@
+<div class="installation"  *ngIf="data.installation$ | async as app">
+
+  <div class="flex mb-10">
+    <div class="label flex w-200">
+      Star Craft 2 Directory
+    </div>
+    <div class="input-container">
+      <div (click)="data.directoryDialog()" class="flex flex-grow">
+        <input class="input-value" readonly type="text" [value]="app.gameDirectory|| ''"/>
+        <div class="input-mark">
+          <span *ngIf="!app.gameDirectoryCorrect">?</span>
+          <span *ngIf="app.gameDirectoryCorrect">🗸</span>
+        </div>
+        <div class="input-button">
+          ...
+        </div>
+      </div>
+      <div class="input-button" (click)="data.directoryOpen()" >
+        🗀
+      </div>
+    </div>
+  </div>
+  <div class="flex mb-10">
+    <div class="label flex w-200">
+      Mod Directory
+    </div>
+    <div class="input-container">
+      <input class="input-value inactive" type="text" readonly [value]="app.modDirectory"/>
+    </div>
+  </div>
+  <div class="flex mb-10">
+    <div class="label flex w-200">
+      Download Server:
+    </div>
+    <div class="input-container">
+      <input class="input-value inactive" type="text" readonly [value]="app.host || ''"/>
+    </div>
+  </div>
+  <div *ngFor="let file of app.files" class="downloading-progress">
+    <div class="installation-file">
+      {{file.name}}
+    </div>
+    <div class="downloading-amount">
+      <div class="installation-tip">
+        <div class="installation-amount">
+          <span *ngIf="!file.ready">{{file.loaded | fileSize}} /</span> {{file.size | fileSize}}</div>
+        <div class="app-speed" *ngIf="file.downloading">({{file.speed| fileSize :1:1: 2}}/sec)</div>
+      </div>
+      <div class="progress-bar-aside"  *ngIf="!file.ready">
+        <div class="progress-bar__status-bar" [style]="{'--status': file.progress || '0','width': file.progress+'%'}"></div>
+      </div>
+    </div>
+    <div class="downloading-status">
+      <div *ngIf="file.ready">✅</div>
+      <div *ngIf="file.downloading">↘</div>
+      <div *ngIf="file.error">❌</div>
+    </div>
+  </div>
+</div>
